@@ -103,5 +103,10 @@
     }
     
 }
-
+#pragma mark -
+#pragma mark Dealloc
+- (void)dealloc {
+	
+	_delegate=nil;
+}
 @end

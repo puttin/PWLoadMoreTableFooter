@@ -16,7 +16,7 @@ typedef enum{
 
 @protocol PWLoadMoreTableFooterDelegate;
 @interface PWLoadMoreTableFooterView : UIControl {
-    id __weak delegate;
+    id __unsafe_unretained delegate;
 	PWLoadMoreState _state;
     
 	UILabel *_statusLabel;
@@ -26,7 +26,7 @@ typedef enum{
 - (void)pwLoadMoreTableDataSourceDidFinishedLoading;
 - (void)resetLoadMore;
 
-@property(nonatomic,weak) id <PWLoadMoreTableFooterDelegate> delegate;
+@property(nonatomic,unsafe_unretained) id <PWLoadMoreTableFooterDelegate> delegate;
 @end
 
 @protocol PWLoadMoreTableFooterDelegate <NSObject>
