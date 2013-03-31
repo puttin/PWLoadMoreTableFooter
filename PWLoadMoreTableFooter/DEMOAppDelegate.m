@@ -7,14 +7,19 @@
 //
 
 #import "DEMOAppDelegate.h"
+#import "DEMOTableViewController.h"
 
 @implementation DEMOAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UITableViewController *vc = [[DEMOTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
     return YES;
 }

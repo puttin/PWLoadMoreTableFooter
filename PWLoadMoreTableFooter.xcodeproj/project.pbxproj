@@ -16,6 +16,8 @@
 		D2C86C0D170833BD0046581F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C86C0C170833BD0046581F /* Default.png */; };
 		D2C86C0F170833BD0046581F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C86C0E170833BD0046581F /* Default@2x.png */; };
 		D2C86C11170833BD0046581F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C86C10170833BD0046581F /* Default-568h@2x.png */; };
+		D2C86C19170834140046581F /* DEMOTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C86C18170834140046581F /* DEMOTableViewController.m */; };
+		D2C86C1C170836440046581F /* PWLoadMoreTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C86C1B170836440046581F /* PWLoadMoreTableFooterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,10 @@
 		D2C86C0C170833BD0046581F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		D2C86C0E170833BD0046581F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		D2C86C10170833BD0046581F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D2C86C17170834140046581F /* DEMOTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEMOTableViewController.h; sourceTree = "<group>"; };
+		D2C86C18170834140046581F /* DEMOTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEMOTableViewController.m; sourceTree = "<group>"; };
+		D2C86C1A170836440046581F /* PWLoadMoreTableFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWLoadMoreTableFooterView.h; sourceTree = "<group>"; };
+		D2C86C1B170836440046581F /* PWLoadMoreTableFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWLoadMoreTableFooterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +86,10 @@
 			children = (
 				D2C86C09170833BD0046581F /* DEMOAppDelegate.h */,
 				D2C86C0A170833BD0046581F /* DEMOAppDelegate.m */,
+				D2C86C1A170836440046581F /* PWLoadMoreTableFooterView.h */,
+				D2C86C1B170836440046581F /* PWLoadMoreTableFooterView.m */,
+				D2C86C17170834140046581F /* DEMOTableViewController.h */,
+				D2C86C18170834140046581F /* DEMOTableViewController.m */,
 				D2C86C01170833BD0046581F /* Supporting Files */,
 			);
 			path = PWLoadMoreTableFooter;
@@ -167,6 +177,8 @@
 			files = (
 				D2C86C07170833BD0046581F /* main.m in Sources */,
 				D2C86C0B170833BD0046581F /* DEMOAppDelegate.m in Sources */,
+				D2C86C19170834140046581F /* DEMOTableViewController.m in Sources */,
+				D2C86C1C170836440046581F /* PWLoadMoreTableFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +221,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -234,7 +246,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -248,6 +260,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PWLoadMoreTableFooter/PWLoadMoreTableFooter-Prefix.pch";
 				INFOPLIST_FILE = "PWLoadMoreTableFooter/PWLoadMoreTableFooter-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -259,6 +272,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PWLoadMoreTableFooter/PWLoadMoreTableFooter-Prefix.pch";
 				INFOPLIST_FILE = "PWLoadMoreTableFooter/PWLoadMoreTableFooter-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
