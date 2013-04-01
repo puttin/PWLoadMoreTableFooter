@@ -15,7 +15,7 @@ pod 'PWLoadMoreTableFooter', '~>1.0'
 3. And it should work!
 
 ## What's next?
-1. Cocoapods support?
+1. Tell me
 
 ## Authors and Contributors
 In 2013, Puttin Wong([@puttin](https://github.com/puttin)) founded PWLoadMoreTableFooter.
