@@ -7,7 +7,7 @@ A similar control to the load more control. Idea come from [enormego / EGOTableV
 ### With [CocoaPods](http://cocoapods.org)
 Edit your Podfile with  
 ```
-pod 'PWLoadMoreTableFooter', '~>1.0'
+pod 'PWLoadMoreTableFooter', '~>1.0.1'
 ```  
 ### Without CocoaPods
 1. Add the PWLoadMoreTableFooterView.h and PWLoadMoreTableFooterView.m file to your project
