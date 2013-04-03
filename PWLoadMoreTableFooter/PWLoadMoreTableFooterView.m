@@ -38,7 +38,7 @@
 		[self addSubview:view];
 		_activityView = view;
 		
-		[self setState:PWLoadMoreNormal];
+		[self setState:PWLoadMoreLoading];      //wait for the data source to tell me he has loaded all data
     }
 	
     return self;
@@ -74,17 +74,28 @@
 }
 
 - (void)pwLoadMoreTableDataSourceDidFinishedLoading {
-	BOOL _allLoaded = NO;
+    if ([self delegateIsAllLoaded]) {
+        [self noMore];
+    } else {
+        [self canLoadMore];
+    }
+}
+
+- (BOOL)delegateIsAllLoaded {
+    BOOL _allLoaded = NO;
     if ([_delegate respondsToSelector:@selector(pwLoadMoreTableDataSourceAllLoaded)]) {
         _allLoaded = [_delegate pwLoadMoreTableDataSourceAllLoaded];
     }
-    if (_allLoaded) {
-        [self setState:PWLoadMoreDone];
-    } else {
-        [self setState:PWLoadMoreNormal];
+    return _allLoaded;
+}
+
+- (void)resetLoadMore {
+    if (![self delegateIsAllLoaded]) {
+        [self canLoadMore];
     }
 }
-- (void)resetLoadMore {
+
+- (void)canLoadMore {
     [self setState:PWLoadMoreNormal];
 }
 

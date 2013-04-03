@@ -7,6 +7,7 @@
 //
 
 #import "DEMOTableViewController.h"
+#define kMaxCellCount 2
 
 @interface DEMOTableViewController ()
 
@@ -28,8 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    cellCount = 1;
     
+    //config the load more view
     if (_loadMoreFooterView == nil) {
 		
 		PWLoadMoreTableFooterView *view = [[PWLoadMoreTableFooterView alloc] init];
@@ -37,16 +38,22 @@
 		_loadMoreFooterView = view;
 		
 	}
-    
     self.tableView.tableFooterView = _loadMoreFooterView;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshLoadMore)];
+    //*****IMPORTANT*****
+    //you need to do this when you first load your data
+    //need to check whether the data has all loaded
+    _allLoaded = YES;       //suppose all loaded at first
+    //Get the data first time
+    cellCount = 1;          //load your data, here is only demo purpose
+    if (cellCount < kMaxCellCount) {
+        _allLoaded = NO;    //you know
+    }
+    //tell the load more view: I have load the data.
+    [self doneLoadingTableViewData];
+    //*****IMPORTANT*****
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(resetLoadMore)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -82,45 +89,6 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -140,17 +108,19 @@
 - (void)doneLoadingTableViewData {
 	
 	//  model should call this when its done loading
-	_reloading = NO;
+	_loadingMore = NO;
 	[_loadMoreFooterView pwLoadMoreTableDataSourceDidFinishedLoading];
     [self.tableView reloadData];
 	
 }
 
-- (void)refreshLoadMore {
-    //data source should call this when it can load more
+- (void)resetLoadMore {
     cellCount = 1;
     [self.tableView reloadData];
-    _allLoaded = NO;
+    //data source should call this when it can load more
+    if (cellCount < kMaxCellCount) {
+        _allLoaded = NO;
+    }
     [_loadMoreFooterView resetLoadMore];
 }
 
@@ -158,18 +128,18 @@
 #pragma mark PWLoadMoreTableFooterDelegate Methods
 
 - (void)pwLoadMore {
-	_reloading = YES;
+	_loadingMore = YES;
     ++cellCount;
     //when all items loaded, set this to YES;
-    if (cellCount == 5) { // 5 is only demo purpose
+    if (cellCount >= kMaxCellCount) {               // kMaxCellCount is only demo purpose
         _allLoaded = YES;
     }
-	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:1.0];
 }
 
 
-- (BOOL)pwLoadMoreTableDataSourceIsLoading {
-    return _reloading;
+- (BOOL)pwLoadMoreTableDataSourceIsLoading {        //this method has no use right now.
+    return _loadingMore;
 }
 - (BOOL)pwLoadMoreTableDataSourceAllLoaded {
     return _allLoaded;

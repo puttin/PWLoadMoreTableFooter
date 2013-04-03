@@ -31,6 +31,7 @@ typedef enum{
 
 @protocol PWLoadMoreTableFooterDelegate <NSObject>
 - (void)pwLoadMore;
-- (BOOL)pwLoadMoreTableDataSourceIsLoading;
 - (BOOL)pwLoadMoreTableDataSourceAllLoaded;
+@optional
+- (BOOL)pwLoadMoreTableDataSourceIsLoading; //not using at thie moment
 @end

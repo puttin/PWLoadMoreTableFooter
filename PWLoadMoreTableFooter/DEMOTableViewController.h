@@ -10,7 +10,7 @@
 #import "PWLoadMoreTableFooterView.h"
 @interface DEMOTableViewController : UITableViewController <PWLoadMoreTableFooterDelegate> {
     PWLoadMoreTableFooterView *_loadMoreFooterView;
-	BOOL _reloading;
+	BOOL _loadingMore;
     bool _allLoaded;
 }
 
