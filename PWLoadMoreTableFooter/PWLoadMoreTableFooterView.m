@@ -50,7 +50,7 @@
 	switch (aState) {
 		case PWLoadMoreNormal:
             [self addTarget:self action:@selector(callDelegateToLoadMore) forControlEvents:UIControlEventTouchUpInside];
-			_statusLabel.text = NSLocalizedString(@"Load More...", @"Load More items");
+			_statusLabel.text = NSLocalizedString(@"Load More", @"Load More items");
 			[_activityView stopAnimating];
 			
 			break;
@@ -90,9 +90,10 @@
 }
 
 - (void)resetLoadMore {
-    if (![self delegateIsAllLoaded]) {
+    if ([self delegateIsAllLoaded]) {
+        [self noMore];
+    } else
         [self canLoadMore];
-    }
 }
 
 - (void)canLoadMore {
@@ -103,16 +104,41 @@
     [self setState:PWLoadMoreDone];
 }
 
-- (void)callDelegateToLoadMore {
-    if (_state == PWLoadMoreNormal) {
-        if ([_delegate respondsToSelector:@selector(pwLoadMore)]) {
-            [_delegate pwLoadMore];
-            [self setState:PWLoadMoreLoading];
+- (void)realCallDelegateToLoadMore { //temporary
+    if ([_delegate respondsToSelector:@selector(pwLoadMore)]) {
+        [_delegate pwLoadMore];
+        [self setState:PWLoadMoreLoading];
+    }
+}
+
+-(void) updateStatus:(NSTimer *)timer{
+    if ([_delegate respondsToSelector:@selector(pwLoadMoreTableDataSourceIsLoading)]) {
+        if ([_delegate pwLoadMoreTableDataSourceIsLoading]) {
+            //Do nothing
+        } else {
+            [timer invalidate];
+            [self pwLoadMoreTableDataSourceDidFinishedLoading];
         }
     } else {
         //Do nothing
     }
-    
+}
+
+- (void)callDelegateToLoadMore {
+    if (_state == PWLoadMoreNormal) {
+        if ([_delegate respondsToSelector:@selector(pwLoadMoreTableDataSourceIsLoading)]) {
+            if ([_delegate pwLoadMoreTableDataSourceIsLoading]) {
+                [self removeTarget:self action:@selector(callDelegateToLoadMore) forControlEvents:UIControlEventTouchUpInside];
+                _statusLabel.text = NSLocalizedString(@"Not available now...", @"Wait until it's safe to load more");
+                [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
+            } else {
+                [self realCallDelegateToLoadMore];
+            }
+        } else
+            [self realCallDelegateToLoadMore];//temporary
+    } else {
+        //Do nothing
+    }
 }
 #pragma mark -
 #pragma mark Dealloc

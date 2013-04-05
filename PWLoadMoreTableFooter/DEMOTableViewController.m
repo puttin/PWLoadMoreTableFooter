@@ -43,17 +43,14 @@
     //*****IMPORTANT*****
     //you need to do this when you first load your data
     //need to check whether the data has all loaded
-    _allLoaded = YES;       //suppose all loaded at first
     //Get the data first time
     cellCount = 1;          //load your data, here is only demo purpose
-    if (cellCount < kMaxCellCount) {
-        _allLoaded = NO;    //you know
-    }
+    [self check];
     //tell the load more view: I have load the data.
     [self doneLoadingTableViewData];
     //*****IMPORTANT*****
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(resetLoadMore)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -93,53 +90,65 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 
-- (void)doneLoadingTableViewData {
-	
-	//  model should call this when its done loading
-	_loadingMore = NO;
-	[_loadMoreFooterView pwLoadMoreTableDataSourceDidFinishedLoading];
-    [self.tableView reloadData];
-	
+- (void)check {
+    //data source should call this when it can load more
+    //when all items loaded, set this to YES;
+    if (cellCount >= kMaxCellCount) {               // kMaxCellCount is only demo purpose
+        _allLoaded = YES;
+    } else
+        _allLoaded = NO;
 }
 
-- (void)resetLoadMore {
+- (void)doneLoadingTableViewData {
+	//  model should call this when its done loading
+	[_loadMoreFooterView pwLoadMoreTableDataSourceDidFinishedLoading];
+    [self.tableView reloadData];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)demoOnly {
+    _datasourceIsLoading = NO;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)refresh {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    _datasourceIsLoading = YES;
     cellCount = 1;
     [self.tableView reloadData];
-    //data source should call this when it can load more
-    if (cellCount < kMaxCellCount) {
-        _allLoaded = NO;
-    }
+    [self check];
     [_loadMoreFooterView resetLoadMore];
+    
+    //demo Only, fake it's still loading
+    [self performSelector:@selector(demoOnly) withObject:nil afterDelay:5.0];
 }
 
 #pragma mark -
 #pragma mark PWLoadMoreTableFooterDelegate Methods
 
 - (void)pwLoadMore {
-	_loadingMore = YES;
+    //just make sure when loading more, DO NOT try to refresh your data
+    //Especially when you do your work asynchronously
+    //Unless you are pretty sure what you are doing
+    //When you are refreshing your data, you will not be able to load more if you have pwLoadMoreTableDataSourceIsLoading and config it right
+    //disable the navigationItem is only demo purpose
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    _datasourceIsLoading = YES;
     ++cellCount;
-    //when all items loaded, set this to YES;
-    if (cellCount >= kMaxCellCount) {               // kMaxCellCount is only demo purpose
-        _allLoaded = YES;
-    }
+    [self check];
+	_datasourceIsLoading = NO;
 	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:1.0];
 }
 
 
-- (BOOL)pwLoadMoreTableDataSourceIsLoading {        //this method has no use right now.
-    return _loadingMore;
+- (BOOL)pwLoadMoreTableDataSourceIsLoading {
+    return _datasourceIsLoading;
 }
 - (BOOL)pwLoadMoreTableDataSourceAllLoaded {
     return _allLoaded;
